@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 
 class CustomAccountManager(BaseUserManager):
-    def create_superuser(self, email, user_name,password, **other_fields):
+    def create_superuser(self, email, username,password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
         if other_fields.get('is_staff') is not True:
@@ -16,13 +16,13 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, user_name,password,**other_fields)
+        return self.create_user(email, username,password,**other_fields)
 
-    def create_user(self, email, user_name ,password, **other_fields):
+    def create_user(self, email, username ,password, **other_fields):
         if not email:
             raise ValueError(_('You must provide an email address'))
         email = self.normalize_email(email)
-        user = self.model(email=email, username=user_name,**other_fields)
+        user = self.model(email=email, username=username,**other_fields)
         user.set_password(password)
         user.save()
         return user
@@ -30,7 +30,7 @@ class CustomAccountManager(BaseUserManager):
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True,blank=False)
-    user_name = models.CharField(max_length=30, unique=True,blank=False)
+    username = models.CharField(max_length=30, unique=True,blank=False)
     date_joined = models.DateTimeField(default=timezone.now)
     address = models.TextField(max_length=500, blank=True)
     phone_number = PhoneNumberField(unique = True, null = False, blank = False)
@@ -45,7 +45,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name',]
+    REQUIRED_FIELDS = ['username',]
     
     def __str__(self) -> str:
-        return self.user_name
+        return self.username
