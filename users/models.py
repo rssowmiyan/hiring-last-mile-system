@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models.fields import CharField
 from django.utils import timezone
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
+
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, username,password, **other_fields):
@@ -33,7 +34,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True,blank=False)
     date_joined = models.DateTimeField(default=timezone.now)
     address = models.TextField(max_length=500, blank=True)
-    phone_number = PhoneNumberField(unique = True, null = False, blank = False)
+    phone_number = CharField(max_length=20,unique = True)
     is_staff = models.BooleanField(default=False,help_text='Designates whether the user can log intothis admin site.')
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)

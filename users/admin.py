@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import NewUser
 from django.contrib.auth.admin import UserAdmin
 from django.forms import TextInput, Textarea
-admin.site.site_header='Admin page'
+admin.site.site_header='Hiring Last Mile System'
 # class UserAdminConfig(UserAdmin):
 #     model = NewUser
 #     search_fields = ('email', 'username',)

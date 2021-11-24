@@ -25,9 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contacts',
     'users',
-    'phonenumber_field',
     'crispy_forms',
     'crispy_bootstrap5',
+    'materializecssform',
 ]
 
 MIDDLEWARE = [
