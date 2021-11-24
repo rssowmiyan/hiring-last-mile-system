@@ -4,11 +4,16 @@ from django.db.models import fields
 from .models import Upload,ContactInfo
 from django_countries.widgets import CountrySelectWidget
 
+nput_type = 'date'
+
 class ContactInfoForm(forms.ModelForm):
     class Meta:
         model = ContactInfo
-        fields = ('full_name','first_name','middle_name','last_name','company','designation','email','aadhar_id','pancard_id','phone_number','location','gender','title','university','country','degree','passing_year','college','linkedin','facebook','instagram_id','industry','state','zipcode','total_exp','ctc','notes','remarks','next_act',)
-        widgets = {'country': CountrySelectWidget()}
+        fields = ('full_name','first_name','middle_name','last_name','company','designation','email','aadhar_id','pancard_id','phone_number','location','gender','title','university','country','degree','passing_year','college','linkedin','facebook','instagram_id','industry','state','zipcode','total_exp','years_in_business','cin_no','turnover','date_of_incorporation','employees','ctc','notes','remarks','next_act',)
+        widgets = {
+            'country': CountrySelectWidget(),
+            }
+          
 
 class UploadForm(forms.ModelForm):
     class Meta:

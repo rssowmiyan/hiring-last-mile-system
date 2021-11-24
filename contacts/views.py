@@ -23,9 +23,16 @@ def home(request):
 
 def matchFields(request):
     if(request.method=='POST'):
-        filepath = '/media/testing123.csv'
-        filepath = f'.{filepath}'
-        df = pd.read_csv(filepath)
+        # filepath = '/media/testing123.csv'
+        filepath = request.session.get('filepath')
+        if(filepath[-3:]=='csv'):
+            filepath = f'.{filepath}'
+            df = pd.read_csv(filepath)
+        # converting excel to csv and then to dataframe
+        else:
+            filepath = f'.{filepath}'
+            df = pd.read_excel('filepath')
+            df.to_csv('filepath', index=False)
         names = list(df.columns)
         matched = { key:request.POST.get(key, False) for key in names }
         # pprint(matched)
@@ -42,8 +49,8 @@ def matchFields(request):
         return HttpResponse('<h1>cols renamed!</h1>')
 
     else:
-        # filepath = request.session.get('filepath')
-        filepath = '/media/testing123.csv'
+        filepath = request.session.get('filepath')
+        # filepath = '/media/testing123.csv'
         filepath = f'.{filepath}'
         df = pd.read_csv(filepath)
         # cols in the uploaded excel sheet
