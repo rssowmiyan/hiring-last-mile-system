@@ -1,3 +1,21 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render
-
-# Create your views here.
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.db import IntegrityError
+from django.contrib.auth import login, logout, authenticate
+from .forms import CustomUserCreationForm
+from .models import NewUser
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+# ------------------------------------------------------------------
+def loginuser(request):
+    if request.method == 'GET':
+        return render(request, 'loginuser.html', {'form':AuthenticationForm()})
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match'})
+        else:
+            login(request, user)
+            return HttpResponse('<h1>logged in</h1>')

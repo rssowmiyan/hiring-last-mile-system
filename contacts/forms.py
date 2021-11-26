@@ -13,6 +13,7 @@ class ContactInfoForm(forms.ModelForm):
         widgets = {
             'country': CountrySelectWidget(),
             }
+
           
 
 class UploadForm(forms.ModelForm):

@@ -12,7 +12,7 @@ def home(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            temp = form.save(commit=False)
+            temp = form.save()
             print(temp.upload_file.url)
             # storing the filename uploaded in this session
             request.session['filepath'] = temp.upload_file.url
@@ -23,19 +23,21 @@ def home(request):
 
 def matchFields(request):
     if(request.method=='POST'):
-        # filepath = '/media/testing123.csv'
-        filepath = request.session.get('filepath')
+        filepath = '/media/Sample_Data_Contact_db_v1.csv'
+        # filepath = request.session.get('filepath')
         if(filepath[-3:]=='csv'):
+            print();print(filepath[-3:])
             filepath = f'.{filepath}'
             df = pd.read_csv(filepath)
         # converting excel to csv and then to dataframe
         else:
+            print();print(filepath[-4:])
             filepath = f'.{filepath}'
             df = pd.read_excel('filepath')
-            df.to_csv('filepath', index=False)
+            df.to_csv('filepath',index=False)
+        df.drop(df.filter(regex="Unnamed"),axis=1, inplace=True)
         names = list(df.columns)
         matched = { key:request.POST.get(key, False) for key in names }
-        # pprint(matched)
         df.rename(columns = matched, inplace = True)
         df.set_index("full_name")
         dictionary = df.to_dict(orient='index')
@@ -49,15 +51,18 @@ def matchFields(request):
         return HttpResponse('<h1>cols renamed!</h1>')
 
     else:
-        filepath = request.session.get('filepath')
-        # filepath = '/media/testing123.csv'
+        # filepath = request.session.get('filepath')
+        filepath = '/media/Sample_Data_Contact_db_v1.csv'
         filepath = f'.{filepath}'
         df = pd.read_csv(filepath)
+        #drop unnamed fields
+        df.drop(df.filter(regex="Unname"),axis=1, inplace=True)
         # cols in the uploaded excel sheet
         names = list(df.columns)
+        pprint(names)
         fields = [field.name for field in ContactInfo._meta.get_fields()]
         # pprint(f'fields of the DB-> {fields}')
-        return render(request,'contacts/matching.html',{'names':names,'fields':fields,'filepath':filepath})
+        return render(request,'contacts/matching.html',{'names':names,'fields':fields})
 
 
 def manualEntry(request):
