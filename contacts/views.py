@@ -7,6 +7,7 @@ from .forms import UploadForm,ContactInfoForm
 from django.http import HttpResponse
 import pandas as pd
 from pprint import pprint
+from django.contrib.auth.decorators import login_required
 # ------------------------------------------------------------------------------------ #
 def home(request):
     if request.method == 'POST':
@@ -21,27 +22,35 @@ def home(request):
         form = UploadForm()
         return render(request,'contacts/home.html',{'form':form})
 
+
+@login_required(login_url='/')
 def matchFields(request):
     if(request.method=='POST'):
         filepath = '/media/Sample_Data_Contact_db_v1.csv'
         # filepath = request.session.get('filepath')
         if(filepath[-3:]=='csv'):
-            print();print(filepath[-3:])
+            print();pprint(f'extension -> {filepath[-3:]}')
             filepath = f'.{filepath}'
             df = pd.read_csv(filepath)
         # converting excel to csv and then to dataframe
         else:
-            print();print(filepath[-4:])
+            print();pprint(f'extension -> {filepath[-4:]}')
             filepath = f'.{filepath}'
             df = pd.read_excel('filepath')
             df.to_csv('filepath',index=False)
         df.drop(df.filter(regex="Unnamed"),axis=1, inplace=True)
         names = list(df.columns)
         matched = { key:request.POST.get(key, False) for key in names }
+        try:
+            keyvaluepair_file = open('E:/Hiring challenge project/media/keyvaluepair.txt', 'wt')
+            keyvaluepair_file.write(str(matched))
+            keyvaluepair_file.close()
+        except:
+            pass
         df.rename(columns = matched, inplace = True)
-        df.set_index("full_name")
+        df.set_index("full_name",drop=True)
         dictionary = df.to_dict(orient='index')
-        pprint(f'dictionary->{dictionary}')
+        # pprint(f'dictionary->{dictionary}')
         for index, object in dictionary.items():
             model = ContactInfo()
             for key,value in object.items():
@@ -56,15 +65,16 @@ def matchFields(request):
         filepath = f'.{filepath}'
         df = pd.read_csv(filepath)
         #drop unnamed fields
-        df.drop(df.filter(regex="Unname"),axis=1, inplace=True)
+        df.drop(df.filter(regex="Unnamed"),axis=1, inplace=True)
         # cols in the uploaded excel sheet
         names = list(df.columns)
-        pprint(names)
+        # pprint(names)
         fields = [field.name for field in ContactInfo._meta.get_fields()]
+        fields = sorted(fields,key=str.lower)
         # pprint(f'fields of the DB-> {fields}')
         return render(request,'contacts/matching.html',{'names':names,'fields':fields})
 
-
+@login_required(login_url='/')
 def manualEntry(request):
     if(request.method=='GET'):
         form = ContactInfoForm()
@@ -76,3 +86,5 @@ def manualEntry(request):
             return HttpResponse('Homepage')
         else:
             return render(request,'fillupform.html',{'form':form})
+
+

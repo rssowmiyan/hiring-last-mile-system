@@ -33,17 +33,29 @@
 
 <nav>
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Welcome 👋</a>
+        <a href="#" class="brand-logo"><i class="large material-icons" style="margin-left: 8px;">work</i>Welcome {% if user.is_authenticated %} {{ user.username }} {% endif %}👋</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Login</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'loginuser' %}">Login</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'contacts:home' %}">Contacts</a></li>
             <li><a href="#">Stats</a></li>
-            <li><a href="#">Logout</a></li>
+            <li>
+                <a href="#" onclick="$('#signOutBtn').click()">Logout</a>
+                <form style='display: none;' method="POST" action="{% url 'logoutuser' %}">
+                     {% csrf_token %}
+                     <button id="signOutBtn" type="submit">Logout</button>
+                 </form>
+            </li>
+            {% endif %}
         </ul>
-    </nav>
-
+</nav>
+<br>
 {% block content %}
 
 {% endblock %}
+
 
 </body>
 </html>

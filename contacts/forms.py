@@ -4,8 +4,6 @@ from django.db.models import fields
 from .models import Upload,ContactInfo
 from django_countries.widgets import CountrySelectWidget
 
-nput_type = 'date'
-
 class ContactInfoForm(forms.ModelForm):
     class Meta:
         model = ContactInfo

@@ -1,5 +1,5 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import IntegrityError
@@ -18,4 +18,10 @@ def loginuser(request):
             return render(request, 'loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match'})
         else:
             login(request, user)
-            return HttpResponse('<h1>logged in</h1>')
+            return redirect('contacts:home')
+
+@login_required
+def logoutuser(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('contacts:home')
