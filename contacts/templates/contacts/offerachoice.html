@@ -1,0 +1,19 @@
+{% extends "contacts/base.html" %}
+{% load materializecss %}
+{% block content %}
+<div class="container" style="margin-top: 35vh;">
+    <div class="row">
+        <div class="col s6">
+            <a class="btn waves-effect waves-light btn-large" href="#"
+            type="submit">Use the previously used mappings
+                <i class="material-icons right">assignment_turned_in</i>
+            </a>            
+        </div>
+        <div class="col s6">
+            <a class="btn waves-effect waves-light btn-large" href="{% url 'contacts:matchFields' %}"  type="submit"> Create a new mapping manually
+                <i class="material-icons right">assignment_returned</i>
+            </a> 
+        </div>
+    </div>
+</div>
+{% endblock %}

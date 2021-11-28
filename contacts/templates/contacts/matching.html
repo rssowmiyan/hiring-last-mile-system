@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container">
     <form action="" method="POST">
+        <input id="option" type="checkbox" value="checked" name="checkBox">
         {% csrf_token %}
         {% for name in names %}                       
         {{name}}:  
