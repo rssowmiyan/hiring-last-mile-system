@@ -7,5 +7,4 @@ urlpatterns=[
     path('',views.home,name='home'),
     path('manual/',views.manualEntry,name='manualEntry'),
     path('match/',views.matchFields,name='matchFields'),
-    path('choice/',views.offerAChoice,name='offerAChoice'),
 ]

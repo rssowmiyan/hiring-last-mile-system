@@ -3,8 +3,12 @@
 {% block content %}
 <div class="container">
     <form action="" method="POST">
-        <input id="option" type="checkbox" value="checked" name="checkBox">
         {% csrf_token %}
+        {% if flag %}
+            <button class="waves-effect waves-light btn-small brown lighten-1" type="submit" name="checkBox">Skip matching</button>
+            <a style="vertical-align: bottom;" onclick="M.toast({html: 'You can skip this step & use the previous mappings'})"> <i class="material-icons">help</i></a>
+            <br><br>
+        {% endif %} 
         {% for name in names %}                       
         {{name}}:  
         <select class="form-select" name="{{name}}">
@@ -14,7 +18,8 @@
         </select>
         {% endfor %}
         <br>
-        <input class="btn btn-success" type="submit" value="submit">
+        <button class="btn green darken-3" type="submit" value="submit">Submit <i class="material-icons right">send</i>
+        </button>
     </form>
 </div>
 <br>

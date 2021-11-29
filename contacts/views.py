@@ -9,6 +9,7 @@ import pandas as pd
 from pprint import pprint
 from django.contrib.auth.decorators import login_required
 from pathlib import Path
+import ast
 # ------------------------------------------------------------------------------------ #
 def home(request):
     if request.method == 'POST':
@@ -18,24 +19,18 @@ def home(request):
             print(temp.upload_file.url)
             # storing the filename uploaded in this session
             request.session['filepath'] = temp.upload_file.url
-            return redirect('contacts:offerAChoice')
+            return redirect('contacts:matchFields')
     else:
+        print();print(request.user.username);print()
         form = UploadForm()
         return render(request,'contacts/home.html',{'form':form})
 
 
 
-@login_required(login_url='/')
-def offerAChoice(request):
-    path_to_file = f'./media/{request.user.username}.txt'
+def offerAChoice(path_to_file)->bool:
     path = Path(path_to_file)
-    '''
-    if path.is_file(): # return true if the file exists
-        return render('contacts/offerachoice.html')
-    else: # If the file doesn't exists we'll jump to the fields matching process 
-        return redirect('contacts:matchFields')
-    '''
-    return render(request,'contacts/offerachoice.html')
+    return path.is_file()
+
 
 @login_required(login_url='/')
 def matchFields(request):
@@ -53,6 +48,7 @@ def matchFields(request):
             df.to_csv('filepath',index=False)
         df.drop(df.filter(regex="Unnamed"),axis=1, inplace=True)
         names = list(df.columns)
+
         if request.POST.get('checkBox') == None:  # Don't use  prev key value pair
             matched = { key:request.POST.get(key, False) for key in names }
             # saving the mappings done by the user 
@@ -60,8 +56,11 @@ def matchFields(request):
             keyvaluepair_file = open('path_to_file', 'wt+')
             keyvaluepair_file.write(str(matched))
             keyvaluepair_file.close()
+
         else: # Use the prev key value pair
-            pass
+            file = open("E:/Hiring challenge project/media/admin.txt", "r") 
+            contents = file.read()
+            matched = ast.literal_eval(contents)
         df.rename(columns = matched, inplace = True)
         df.set_index("full_name",drop=True)
         dictionary = df.to_dict(orient='index')
@@ -74,6 +73,8 @@ def matchFields(request):
         return HttpResponse('<h1>cols renamed!</h1>')
 
     else:
+        path_to_file = f'./media/{request.user.username}.txt'
+        flag = offerAChoice(path_to_file)
         filepath = request.session.get('filepath')
         filepath = f'.{filepath}'
         df = pd.read_csv(filepath)
@@ -83,7 +84,7 @@ def matchFields(request):
         fields = [field.name for field in ContactInfo._meta.get_fields()]
         fields = sorted(fields,key=str.lower)
         # pprint(f'fields of the DB-> {fields}')
-        return render(request,'contacts/matching.html',{'names':names,'fields':fields})
+        return render(request,'contacts/matching.html',{'names':names,'fields':fields,'flag':flag})
 
 @login_required(login_url='/')
 def manualEntry(request):
