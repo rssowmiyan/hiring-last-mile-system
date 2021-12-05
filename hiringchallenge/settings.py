@@ -25,8 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'contacts',
     'users',
-    'crispy_forms',
-    'crispy_bootstrap5',
+    'funnels',
     'materializecssform',
 ]
 
