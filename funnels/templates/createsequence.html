@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="margin-top:50px ;">
+    <form action="" method="POST">
+        <fieldset><legend>Sequence</legend>
+        {% csrf_token %}
+        {{ form2 }}
+        <br>
+        <input class="btn waves-effect green" type="submit" value="submit">
+        </fieldset>
+    </form>
+    <br>
+    <div class="container">
+        <form action="{% url 'funnels:schedulesequences' %}" method="POST">
+            {% csrf_token %}
+            <div class="input-field">
+                <label for="StartDate">Starting Date</label>
+                <input type="text" class="datepicker" name="StartDate" id="StartDate">
+                <input class="btn waves-effect red lighten-1 text-darken-4" type="submit" value="Schedule">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+    <!-- <div class="center-align">
+        <a class="btn waves-effect teal" href="{% url 'funnels:enoughofsequences' %}">Sequences Done</a>
+    </div> -->

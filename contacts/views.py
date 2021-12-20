@@ -26,7 +26,6 @@ def home(request):
         return render(request,'contacts/home.html',{'form':form})
 
 
-
 def offerAChoice(path_to_file)->bool:
     path = Path(path_to_file)
     return path.is_file()

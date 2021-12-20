@@ -56,6 +56,8 @@ class ContactInfo(models.Model):
     udf08       = models.CharField(blank=True,max_length=100,default="")
     udf09       = models.CharField(blank=True,max_length=100,default="")
     udf10       = models.CharField(blank=True,max_length=100,default="")
+    segment     = models.CharField(max_length=50,default="General",blank=True)
+    sub_segment = models.CharField(max_length=50,blank=True)
 
     def __str__(self):
         return self.full_name

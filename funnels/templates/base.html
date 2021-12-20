@@ -2,13 +2,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block css %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" integrity="sha256-qj3p6P1fJIV+Ndv7RW1ovZI2UhOuboj9GcODzcNFIN8=" crossorigin="anonymous" />
-    {% endblock css %}
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('select').formSelect();
+      });
+      $(document).ready(function(){
+    $('.datepicker').datepicker();
+       });
+    </script>
+    <!-- Compiled and minified CSS -->
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Hiring lastmile system</title>
     <style>
     .rectangle {
@@ -28,15 +37,6 @@
     </style>
 </head>
 <body>
-{% block javascript %}
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/js/materialize.min.js" integrity="sha256-SrBfGi+Zp2LhAvy9M1bWOCXztRU9Ztztxmu5BcYPcPE=" crossorigin="anonymous"></script>
-{% endblock javascript %}
-
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo"><i class="large material-icons" style="margin-left: 8px;">work</i>Welcome {% if user.is_authenticated %} {{ user.username }} {% endif %}👋</a>
