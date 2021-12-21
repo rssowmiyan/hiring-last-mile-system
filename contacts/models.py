@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models.aggregates import Count
 from django_countries.fields import CountryField
 from django.core.validators import FileExtensionValidator
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 class ContactInfo(models.Model):
     CHOICES = (
@@ -17,7 +16,7 @@ class ContactInfo(models.Model):
     company     = models.CharField(max_length=30)
     designation = models.CharField(max_length=30,blank=True,default="")
     email       = models.EmailField(primary_key = True,max_length=62)
-    aadhar_id   = models.CharField(unique=True,max_length=15,blank=True,validators=[MinValueValidator(14),MaxValueValidator(14)],default="")
+    aadhar_id   = models.CharField(max_length=15,blank=True,default="")
     pancard_id  = models.CharField(blank=True,max_length=10,default="")
     phone_number= models.CharField(unique=True,max_length=10)
     location    = models.TextField(max_length=500,default="")
@@ -34,11 +33,11 @@ class ContactInfo(models.Model):
     industry    = models.CharField(blank=True,max_length=50,default="")
     country     = CountryField(blank_label='(select country)')
     state       = models.CharField(max_length=35)
-    zipcode     = models.CharField(max_length=12,validators=[MinValueValidator(5)])
+    zipcode     = models.CharField(max_length=12)
     key_skills  = models.CharField(max_length=50)
     total_exp   = models.CharField(verbose_name = "Total Experience",default="",max_length=15)
     years_in_business = models.CharField(blank=True,default="",max_length=4)
-    cin_no      = models.CharField(blank=True,validators=[MinValueValidator(21),MaxValueValidator(21)],verbose_name="CIN NO",max_length=21,default="")
+    cin_no      = models.CharField(blank=True,verbose_name="CIN NO",max_length=30,default="")
     turnover    = models.CharField(blank=True,max_length=30,default="")
     date_of_incorporation =  models.CharField(blank=True,default="",max_length=12)
     employees   = models.CharField(blank=True,default="",max_length=100)

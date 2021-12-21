@@ -10,7 +10,7 @@ class ContactInfoAdmin(admin.ModelAdmin):
         ('Personal', {'fields': ('first_name', 'middle_name','last_name','full_name','email','location','gender','phone_number','country','zipcode','state')}),
         ('Work', {'fields': ('title','company', 'designation','industry','linkedin','facebook','instagram_id','total_exp','ctc','date_of_incorporation')}),
         ('Education', {'fields': ('university','college','department','degree','passing_year',)}),
-        ('Other', {'fields': ('aadhar_id','pancard_id','notes','remarks','next_act')}),
+        ('Other', {'fields': ('aadhar_id','pancard_id','notes','remarks','next_act','segment','sub_segment')}),
     )
 
 

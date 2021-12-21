@@ -6,7 +6,7 @@ from decouple import config
 
 sg = SendGridAPIClient(api_key=config('SENDGRID_API_KEY')) 
 from_email = Email("sowmiyan00@gmail.com") 
-to_email = To("tamilrsp2001@gmail.com")    
+to_email = To("junkyard404@protonmail.com")    
 subject = "Testing message"
 content = Content("text/plain", "some random content XYZ")
 mail = Mail(from_email, to_email, subject, content)

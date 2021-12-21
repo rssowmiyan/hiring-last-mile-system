@@ -7,14 +7,20 @@ class DefaultTemplates(models.Model):
         return self.template
 
 class Funnel(models.Model):
+    CHOICES = (
+        ('D', 'Draft'),
+        ('O', 'Ongoing'),
+        ('C', 'Completed'),
+    )
     funnel_name      = models.CharField(max_length=60)
-    segment_name     = models.CharField(max_length=60,default="General")
-    sub_segment_name = models.CharField(max_length=60)
+    segment          = models.CharField(max_length=60,default="General")
+    sub_segment      = models.CharField(max_length=60)
     no_of_seq        = models.PositiveSmallIntegerField(default=1)
     start_date       = models.CharField(max_length=20,null=True)
+    ongoing          = models.CharField(max_length=20,choices=CHOICES,default='D')
 
-    def __str__(self) -> str:
-        return self.funnel_name
+    # def __str__(self) -> str:
+    #     return self.funnel_name
     
 
 class Sequence(models.Model):

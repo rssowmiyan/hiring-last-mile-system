@@ -7,7 +7,7 @@ from .models import Sequence,Funnel,DefaultTemplates
 class FunnelForm(forms.ModelForm):
     class Meta:
         model = Funnel
-        fields = ['funnel_name','segment_name','sub_segment_name']
+        fields = ['funnel_name','segment','sub_segment']
 
 class SequenceForm(forms.ModelForm):
     # sequence = forms.ModelMultipleChoiceField(queryset=DefaultTemplates.objects.all(),initial=0)

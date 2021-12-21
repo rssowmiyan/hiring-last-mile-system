@@ -21,7 +21,6 @@ def home(request):
             request.session['filepath'] = temp.upload_file.url
             return redirect('contacts:matchFields')
     else:
-        print();print(request.user.username);print()
         form = UploadForm()
         return render(request,'contacts/home.html',{'form':form})
 

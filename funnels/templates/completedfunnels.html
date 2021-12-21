@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load materializecss %}
+
+{% block content %}
+
+<div class="container">
+    {% if com_funnels %}
+    <ul class="collapsible teal lighten-2">
+        {% for com_funnel in com_funnels %}
+        <li>
+          <div class="collapsible-header"><i class="large material-icons">cloud_done</i>{{ com_funnel.funnel_name }}
+          </div>
+          <div class="collapsible-body">
+            <span style="margin-right: 20px;">No of sequences: {{com_funnel.no_of_seq}}</span>
+            <span style="margin-right: 20px;">Segment: {{com_funnel.segment}}</span>
+            <span style="margin-right: 20px;">Subsegment: {{com_funnel.sub_segment}}</span>
+            <span style="margin-right: 20px;">Scheduled Date: {{com_funnel.start_date}}</span>
+          </div>
+        </li>
+        {% endfor %}    
+    </ul>
+    {% else %}
+    <h2 style="text-align: center;"><i class="large material-icons">cloud_done</i>No completed funnels</h2>
+    {% endif %}
+</div>
+
+{% endblock %}
