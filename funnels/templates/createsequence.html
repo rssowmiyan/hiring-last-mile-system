@@ -22,6 +22,17 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function() {
+    $('a').click(function(event) {
+            var answer = window.confirm("Please pick a date to schedule the sequence(s)");
+            if(answer){
+                event.preventDefault();
+                event.stopPropagation();
+            }
+    });
+});
+</script>
 {% endblock %}
 
     <!-- <div class="center-align">

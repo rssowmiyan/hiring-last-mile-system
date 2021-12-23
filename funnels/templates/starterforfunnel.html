@@ -4,16 +4,27 @@
 {% block content %}
 
 <div class="container" style="margin-top:50px ;">
-
+  <iframe id="loading" style="display: none;margin-left: 18em;"  src="https://gifer.com/embed/1amw" width=480 height=480.000 frameBorder="0" allowFullScreen></iframe>
+  <h4 style="text-align: center;" id="wait"></h4>
   <h3 style="text-align: center;">Funnel<h4></h4>
   <div class="row">
     <div class="col s4"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:createfunnel' %}">Create one</a></div></div>
-    <div class="col s4"><div class="rectangle"><a  class="flow-text" href="#">View ongoing</a></div></div>
-    <div class="col s4"><div class="rectangle"><a  class="flow-text" href="{% url 'funnels:viewcompleted' %}">Completed ones</a></div></div>
+    <div class="col s4"><div class="rectangle"><a class="flow-text" href="#">View ongoing</a></div></div>
+    <div class="col s4"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewcompleted' %}">Completed ones</a></div></div>
   </div>
   <div class="row">
-    <div class="col s4"><div class="rectangle1"><a  class="flow-text" href="{% url 'funnels:startfunnel' %}">Activate pending ones</a></div></div>
+    <div class="col s4"><div class="rectangle1"><a id="activate" class="flow-text" href="{% url 'funnels:startfunnel' %}">Activate pending ones</a></div></div>
   </div>
 </div>
+
+
+<script>
+    $('#activate').click(function(){
+      let gif = document.getElementById("loading");
+      gif.style.display='block';
+      document.getElementById('wait').innerText='Processing...'
+
+    });
+</script>
 
 {% endblock %}

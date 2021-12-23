@@ -15,6 +15,9 @@
        $(document).ready(function(){
          $('.collapsible').collapsible();
        });
+       $(document).ready(function(){
+         $('.modal').modal();
+        });
     </script>
     <!-- Compiled and minified CSS -->
     <meta name = "viewport" content = "width = device-width, initial-scale = 1">
@@ -58,9 +61,9 @@
             <li><a href="{% url 'loginuser' %}">Login</a></li>
             {% endif %}
             {% if user.is_authenticated %}
-            <li><a href="{% url 'contacts:home' %}">Contacts</a></li>
-            <li><a href="{% url 'funnels:starterforfunnel' %}">Funnel</a></li>
-            <li><a href="#">Stats</a></li>
+            <li><a id="dont" href="{% url 'contacts:home' %}">Contacts</a></li>
+            <li><a id="dont" href="{% url 'funnels:starterforfunnel' %}">Funnel</a></li>
+            <li><a id="dont" href="#">Stats</a></li>
             <li>
                 <a href="#" onclick="$('#signOutBtn').click()">Logout</a>
                 <form style='display: none;' method="POST" action="{% url 'logoutuser' %}">
