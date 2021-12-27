@@ -1,24 +1,17 @@
 {% load materializecss %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    {% block css %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Login</title>
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" integrity="sha256-qj3p6P1fJIV+Ndv7RW1ovZI2UhOuboj9GcODzcNFIN8=" crossorigin="anonymous" />
-    {% endblock css %}
-</head>
-<body>
-{% block javascript %}
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/js/materialize.min.js" integrity="sha256-SrBfGi+Zp2LhAvy9M1bWOCXztRU9Ztztxmu5BcYPcPE=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
     <script>
     $(document).ready(function(){
@@ -26,15 +19,27 @@
     // Initialize materialize data picker
     $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
     $('select').formSelect();
+    $(document).ready(function() {
+        $('.card-alert > button').on('click', function(){
+            $(this).closest('div.card-alert').fadeOut('slow');
+        })})
 
     });
     </script>
-{% endblock javascript %}
-    {% if error %}
-        <div role="alert">
-                {{ error }}
-        </div>
-    {% endif %}
+</head>
+<body>
+
+{% if error %}
+<div class="card-alert card red lighten-2">
+    <div class="card-content black-text">
+        <strong>Error!</strong> {{ error }}
+    </div>
+    <button type="button" class="close black-text" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+{% endif %}
+
     <div class="container center-align" style="margin-top: 12em;width: 50vh;">
         <i class="large material-icons">verified_user</i>
             <form method="POST">

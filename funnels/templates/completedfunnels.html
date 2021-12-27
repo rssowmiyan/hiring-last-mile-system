@@ -8,7 +8,7 @@
     <ul class="collapsible teal lighten-2">
         {% for com_funnel in com_funnels %}
         <li>
-          <div class="collapsible-header"><i class="large material-icons">cloud_done</i>{{ com_funnel.funnel_name }}
+          <div class="collapsible-header"><i class="medium material-icons">cloud_done</i> {{ com_funnel.funnel_name }}
           </div>
           <div class="collapsible-body">
             <span style="margin-right: 20px;">No of sequences: {{com_funnel.no_of_seq}}</span>
@@ -20,7 +20,7 @@
         {% endfor %}    
     </ul>
     {% else %}
-    <h2 style="text-align: center;"><i class="large material-icons">cloud_done</i>No completed funnels</h2>
+    <h2 style="text-align: center;"><i class="material-icons medium">cloud_off</i> No completed funnels</h2>
     {% endif %}
 </div>
 

@@ -10,4 +10,6 @@ urlpatterns=[
     path('scheduleseq/',views.schedulesequences,name='schedulesequences'),
     path('activate/',views.startfunnel,name='startfunnel'),
     path('completed/',views.viewcompleted,name='viewcompleted'),
+    path('ongoing/',views.viewongoing,name='viewongoing'),
+    path('customtem/',views.customtemplate,name='customtemplate')
 ]

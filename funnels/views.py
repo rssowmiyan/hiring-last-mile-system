@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.urls import reverse
 from django.shortcuts import get_object_or_404,get_list_or_404
-from .models import Funnel,Sequence
+from .models import Funnel,Sequence,DefaultTemplates
 from contacts.models import ContactInfo
 import re
 from django.db.models import Q
@@ -19,10 +19,14 @@ import os
 from sendgrid.helpers.mail import *
 from decouple import config
 import time
+# messages
+from django.contrib import messages
 #----------------------------------------------------
+@login_required(login_url='/')
 def starterforfunnel(request):    
      return render(request,'starterforfunnel.html')
 
+@login_required(login_url='/')
 def createfunnel(request):
      if(request.method=='POST'):
           form1 = FunnelForm(request.POST)
@@ -34,6 +38,7 @@ def createfunnel(request):
           form1 = FunnelForm()
           return render(request,'createfunnel.html',{'form1':form1})
 
+@login_required(login_url='/')
 def createsequence(request):
      if(request.method=='POST'):
           form2 = SequenceForm(request.POST)
@@ -50,7 +55,7 @@ def createsequence(request):
           return render(request,'createsequence.html',{'form2':form2})
  
 
-
+@login_required(login_url='/')
 def schedulesequences(request):
      if(request.method=='POST'):
           string_start_date = request.POST['StartDate']
@@ -66,8 +71,8 @@ def schedulesequences(request):
                seq.sch_date = start_date
                seq.save()
                start_date += timedelta(days=seq.frequency)
-
-          return HttpResponse('<h1>Scheduling done</h1>')
+          messages.success(request, 'Sequences Scheduled')
+          return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
 
 def sendgrid(to_email,fillin_template,mail_subject,request):
      sg = SendGridAPIClient(api_key=config('SENDGRID_API_KEY')) 
@@ -90,7 +95,7 @@ def updatefunnel(seq):
           seq.funnel_id.status = 'O'
 
 
-
+@login_required(login_url='/')
 def startfunnel(request):
      time.sleep(5)
      today_dateobj = date.today()
@@ -134,5 +139,16 @@ def viewcompleted(request):
 def viewongoing(request):
      if(request.method=='GET'):
           ongoing_funnels = Funnel.objects.filter(status='O')
-          return render(request,'',{'com_funnels':ongoing_funnels})
+          return render(request,'ongoingfunnels.html',{'ongoing_funnels':ongoing_funnels})
 
+@login_required(login_url='/')
+def customtemplate(request):
+     if(request.method=='GET'):
+          return render(request,'createtemplates.html')
+     else:
+          custom_template = request.POST.get('template_data', False)
+          pprint(custom_template)
+          obj = DefaultTemplates(template=custom_template)
+          obj.save()
+          messages.success(request, 'Template saved')
+          return HttpResponseRedirect(reverse('funnels:starterforfunnel'))

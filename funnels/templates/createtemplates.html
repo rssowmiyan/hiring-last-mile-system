@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load materializecss %}
+{% block content %}
+<script src="https://cdn.tiny.cloud/1/xzphby2gqa7j7lgqubc71ze6da29obhqwhbwimxi1uosqsvh/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+          selector: '#mytextarea',
+          menubar: false,
+          toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify'
+        });
+      </script>
+<div class="container">
+    <h5 style="text-align: center;" >Type your custom template</h5>
+
+    <!-- <form action="" method="POST">
+        {% csrf_token %}
+        <div class="input-field">
+            <i class="material-icons prefix">mode_edit</i>
+            <textarea name="template_data" id="text1" class="materialize-textarea"></textarea>
+        </div>
+        <input class="btn" type="submit" value="Create">
+    </form>
+    <br> -->
+        
+    <form action="" method="POST">
+        {% csrf_token %}
+        <textarea id="mytextarea" name="template_data">Hello, World!</textarea><br>
+        <input class="btn" type="submit" value="Create">
+    </form><br>
+
+    <div class="input-field" style="width: 50%;margin-left: 18rem;">
+        <select name="insert_text" id="insert">
+            <option value="{full_name}">Full Name</option>
+            <option value="{first_name}">First Name</option>
+            <option value="{last_name}">Last Name</option>
+            <option value="{designation}">Designation</option>
+            <option value="{phone_number}">Phone Number</option>
+            <option value="{key_skills}">Key Skills</option>
+            <option value="{segment}">Segment</option>
+            <option value="{sub_segment}">Sub Segment</option>
+        </select>
+    </div>
+
+    <button style="margin-left: 18rem;" class="btn green accent-3" onclick="setTextToCurrentPos()">
+        Add the mergefield
+    </button>
+
+</div>
+
+
+<script>
+function setTextToCurrentPos() {
+        let text_to_insert = $("#insert").val();
+        tinymce.activeEditor.execCommand('mceInsertContent', false, text_to_insert);
+        /*
+        var curPos = document.getElementById("mytextarea").selectionStart;
+        console.log(curPos);
+        let x = $("mytextarea").val();
+        let text_to_insert = $("#insert").val();
+        $("mytextarea").val(x.slice(0, curPos) + text_to_insert + x.slice(curPos));
+        */
+        }
+</script>
+{% endblock %}

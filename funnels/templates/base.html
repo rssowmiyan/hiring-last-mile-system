@@ -1,8 +1,8 @@
 {% load materializecss %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
@@ -15,42 +15,22 @@
        $(document).ready(function(){
          $('.collapsible').collapsible();
        });
-       $(document).ready(function(){
-         $('.modal').modal();
-        });
+       $(document).ready(function() {
+        $('textarea').characterCounter();
+       });
+       $(document).ready(function() {
+        $('.card-alert > button').on('click', function(){
+            $(this).closest('div.card-alert').fadeOut('slow');
+        })
+    })
     </script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <!-- Compiled and minified CSS -->
     <meta name = "viewport" content = "width = device-width, initial-scale = 1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel = "stylesheet"
          href = "https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Hiring lastmile system</title>
-    <style>
-    .rectangle {
-    width: 100%;
-    padding: 50px;
-    margin: 1.66%;
-    align-items: center;
-    background-color: #00a388;
-    position: relative;
-    text-align: center;
-    border-radius: 10px;
-    }
-    .rectangle1 {
-    width: 100%;
-    padding: 50px;
-    margin: 1.66%;
-    align-items: center;
-    background-color: #4cd137;
-    position: relative;
-    text-align: center;
-    border-radius: 10px;
-    }
-    a{
-    text-decoration: none;
-    color: black;
-    }
-    </style>
 </head>
 <body>
 <nav>

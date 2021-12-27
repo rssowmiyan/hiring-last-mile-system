@@ -8,8 +8,13 @@ from .forms import CustomUserCreationForm
 from .models import NewUser
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 # ------------------------------------------------------------------
 def loginuser(request):
+    if(request.user.is_authenticated):
+        return HttpResponseRedirect(reverse('contacts:home'))
+
     if request.method == 'GET':
         return render(request, 'loginuser.html', {'form':AuthenticationForm()})
     else:
