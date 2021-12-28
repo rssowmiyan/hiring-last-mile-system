@@ -34,8 +34,8 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True,blank=False)
     date_joined = models.DateTimeField(default=timezone.now)
     address = models.TextField(max_length=500, blank=True)
-    phone_number = CharField(max_length=20,unique = True)
-    is_staff = models.BooleanField(default=False,help_text='Designates whether the user can log intothis admin site.')
+    phone_number = CharField(max_length=20)
+    is_staff = models.BooleanField(default=False,help_text='Designates whether the user can log into this admin site.')
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     no_of_funnels = models.PositiveSmallIntegerField(default=0,validators=[

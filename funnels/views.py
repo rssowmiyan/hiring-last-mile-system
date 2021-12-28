@@ -1,4 +1,4 @@
-from pprint import pp, pprint
+from pprint import pprint
 from django import forms
 from django.http import request
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -21,6 +21,8 @@ from decouple import config
 import time
 # messages
 from django.contrib import messages
+# usermodel
+from django.contrib.auth import get_user_model
 #----------------------------------------------------
 @login_required(login_url='/')
 def starterforfunnel(request):    
@@ -32,7 +34,11 @@ def createfunnel(request):
           form1 = FunnelForm(request.POST)
           if(form1.is_valid()):
                curr_form = form1.save()
-               request.session['funnelID'] = curr_form.id
+               request.session['funnelID'] = curr_form.id #We need it later for settingup seqs
+               curr_form.created_by = request.user
+               # incrementing no of funnels created by user 
+               request.user.no_of_funnels+=1
+               request.user.save()
                return HttpResponseRedirect(reverse('funnels:createsequence'))
      else:
           form1 = FunnelForm()

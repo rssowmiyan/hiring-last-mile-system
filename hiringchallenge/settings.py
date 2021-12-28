@@ -4,7 +4,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-qi8htz!r#_zscsjr0^43$))tfxs!-k9huk0kh%2=+15=w#e9@4'
 
@@ -124,3 +123,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # we're using a custom user model
 AUTH_USER_MODEL = 'users.NewUser'
+
+
+# For resetting passwords
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'srinivasa@student.tce.edu'
+EMAIL_HOST_PASSWORD = '7200676611'
+EMAIL_USE_TLS = True

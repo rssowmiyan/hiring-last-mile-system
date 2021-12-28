@@ -8,8 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <title>Login</title>
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" integrity="sha256-qj3p6P1fJIV+Ndv7RW1ovZI2UhOuboj9GcODzcNFIN8=" crossorigin="anonymous" />
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
@@ -41,7 +39,7 @@
 {% endif %}
 
     <div class="container center-align" style="margin-top: 12em;width: 50vh;">
-        <i class="large material-icons">verified_user</i>
+        <img src="{% static 'login.png' %}">
             <form method="POST">
                 {% csrf_token %}
                 <div class="input-field">
@@ -53,7 +51,8 @@
                     <input type="password" name="password" class="form-control" id="password">
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+            </form><br>
+            <a href='http://localhost:8000/accounts/password_reset/' class="helper-text">Forgot password</a>
     </div>
 </body>
 </html>

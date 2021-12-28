@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+    <title>Signup!</title>
+
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css" integrity="sha256-qj3p6P1fJIV+Ndv7RW1ovZI2UhOuboj9GcODzcNFIN8=" crossorigin="anonymous" /> -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script>
+    $(document).ready(function(){
+
+    // Initialize materialize data picker
+    $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
+    $('select').formSelect();
+    $(document).ready(function() {
+        $('.card-alert > button').on('click', function(){
+            $(this).closest('div.card-alert').fadeOut('slow');
+        })})
+
+    });
+    </script>
+</head>
+<body>
+
+{% if error %}
+<div class="card-alert card red lighten-2">
+    <div class="card-content black-text">
+        <strong>Error!</strong> {{ error }}
+    </div>
+    <button type="button" class="close black-text" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+{% endif %}
+
+    <div class="container center-align" style="margin-top: 4em;">
+        <img src="{% static 'register.png' %}">
+        <div class="container">
+            <form action="" method="POST">
+              {% csrf_token %}
+              {{ UserCreationForm.as_p }}
+              <br>
+              <input class="btn btn-success" type="submit" value="submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

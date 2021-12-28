@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.conf import settings
 
 class DefaultTemplates(models.Model):
     template = models.TextField()
@@ -12,6 +13,12 @@ class Funnel(models.Model):
         ('D', 'Draft'),
         ('O', 'Ongoing'),
         ('C', 'Completed'),
+    )
+    created_by       = models.ForeignKey(
+      settings.AUTH_USER_MODEL, 
+      on_delete=models.CASCADE,
+      null=True,
+      blank=True
     )
     funnel_name      = models.CharField(max_length=60)
     segment          = models.CharField(max_length=60,default="General")
