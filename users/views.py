@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 # ------------------------------------------------------------------
 def loginuser(request):
     if(request.user.is_authenticated):
@@ -20,7 +21,9 @@ def loginuser(request):
     else:
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:
-            return render(request, 'loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match'})
+            messages.error(request, 'Username and password does not match')
+            return HttpResponseRedirect(reverse('loginuser'))
+            # return render(request, 'loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match'})
         else:
             login(request, user)
             return redirect('contacts:home')

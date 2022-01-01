@@ -31,7 +31,7 @@ class ContactInfo(models.Model):
     facebook    = models.URLField(verbose_name = "Facebook URL",max_length=50,blank=True,default="")
     instagram_id= models.CharField(blank=True,verbose_name = "Instagram ID",max_length=50,default="")
     industry    = models.CharField(blank=True,max_length=50,default="")
-    country     = CountryField(blank_label='(select country)')
+    country     = CountryField(blank_label='(select country)',blank=True,default='India')
     state       = models.CharField(max_length=35)
     zipcode     = models.CharField(max_length=12)
     key_skills  = models.CharField(max_length=50)

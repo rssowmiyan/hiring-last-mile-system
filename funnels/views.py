@@ -1,4 +1,5 @@
 from pprint import pprint
+from typing import Counter
 from django import forms
 from django.http import request
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -12,6 +13,7 @@ from .models import Funnel,Sequence,DefaultTemplates
 from contacts.models import ContactInfo
 import re
 from django.db.models import Q
+from django.db import IntegrityError
 from datetime import datetime,date,timedelta
 # sendgrid related imports
 from sendgrid import SendGridAPIClient
@@ -36,6 +38,7 @@ def createfunnel(request):
                curr_form = form1.save()
                request.session['funnelID'] = curr_form.id #We need it later for settingup seqs
                curr_form.created_by = request.user
+               curr_form.save()
                # incrementing no of funnels created by user 
                request.user.no_of_funnels+=1
                request.user.save()
@@ -54,6 +57,7 @@ def createsequence(request):
                curr_seq = form2.save(commit=False)
                # setting the foreign key
                curr_seq.funnel_id = funnel_instance
+               funnel_instance.no_of_seq+=1
                curr_seq.save()
                return HttpResponseRedirect(reverse('funnels:createsequence'))
      else:
@@ -68,45 +72,58 @@ def schedulesequences(request):
           start_date = datetime.strptime(string_start_date,'%b %d, %Y').date()
           funnel_instance = get_object_or_404(Funnel, id=request.session.get('funnelID'))
           funnel_instance.start_date = start_date
+
           # calculating and saving it
           funnel_instance.seqs_remaining=funnel_instance.no_of_seq=Sequence.objects.filter(funnel_id=request.session.get('funnelID')).count()
           funnel_instance.save()
+
           # Generating dates for sequences associated with the funnel
           seqs = Sequence.objects.filter(funnel_id=request.session.get('funnelID'))
           for seq in seqs:
                seq.sch_date = start_date
                seq.save()
                start_date += timedelta(days=seq.frequency)
-          messages.success(request, 'Sequences Scheduled')
+          messages.warning(request, 'Sequences Scheduled')
           return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
 
 def sendgrid(to_email,fillin_template,mail_subject,request):
      sg = SendGridAPIClient(api_key=config('SENDGRID_API_KEY')) 
-     from_email = Email("sowmiyan00@gmail.com") 
+     from_email = Email("tinktankstudio@gmail.com") 
      to_email = To(to_email)    
      subject = mail_subject
-     content = Content("text/plain",fillin_template)
+     content = Content("text/html",fillin_template)
      mail = Mail(from_email, to_email, subject, content)
      response = sg.client.mail.send.post(request_body=mail.get())
      print(f'\033[34mstatus code->{response.status_code}.\033[0m')
-     print(response.body,'\n')
-     print(response.headers,'\n')
+     # print(response.body,'\n')
+     # print(response.headers,'\n')
 
 
-def updatefunnel(seq):
-     seq.funnel_id.seqs_remaining-=1
-     if(seq.funnel_id.seqs_remaining==0):
-          seq.funnel_id.status = 'C'
-     else:
-          seq.funnel_id.status = 'O'
+def updatefunnel(request,seq):
+     try:
+          curr_funnel = seq.funnel_id
+          curr_funnel.seqs_remaining -=1
+          curr_funnel.save()
+          if(curr_funnel.seqs_remaining==0):
+               seq.funnel_id.status = 'C'
+          else:
+               seq.funnel_id.status = 'O'
+          seq.funnel_id.save()
+     except IntegrityError:
+          messages.add_message(request, messages.INFO, 'No pending funnels for today')
+          return 'cancel'
 
 
 @login_required(login_url='/')
 def startfunnel(request):
-     time.sleep(5)
      today_dateobj = date.today()
      seqs = Sequence.objects.filter(sch_date=today_dateobj)
+     counter = 0
      for seq in seqs:
+          flag_for_repeated_fun = updatefunnel(request,seq)
+          if(flag_for_repeated_fun == 'cancel'):
+               continue
+          counter+=1
           mail_subject = seq.description
           chosen_template = str(seq.sequence)
           merged_fields = re.findall(r"\{([A-Z a-z _]+)\}", chosen_template)
@@ -115,10 +132,10 @@ def startfunnel(request):
           d = {}
           for merged_field in merged_fields:
                if(merged_field=='segment' or merged_field=='sub_segment'):
-                    d[merged_field] = getattr(seq.sequence,merged_field)
+                    d[merged_field] = getattr(seq.funnel_id,merged_field)
 
           # Filtering records that matches the segment & sub_segment
-          matched_records = ContactInfo.fun_objects.filter(Q(segment__icontains=seq.sequence.segment)&Q(sub_segment__icontains=seq.sequence.sub_segment))
+          matched_records = ContactInfo.objects.filter(Q(segment__icontains=seq.funnel_id.segment)&Q(sub_segment__icontains=seq.funnel_id.sub_segment))
 
           # Iterating through the matchedrecords and fetching necessary details
           for matching_record in matched_records:
@@ -128,11 +145,12 @@ def startfunnel(request):
                fillin_template = chosen_template.format(**d) # generic template to personal one
                to_email = getattr(matching_record,'email')
                print("\033[34mEntering sendgrid module.\033[0m")
-               pprint(fillin_template)
+               # pprint(fillin_template)
                sendgrid(to_email,fillin_template,mail_subject,request)
-
-          updatefunnel(seq)
-     return HttpResponse('<h1>Emails sent!</h1>')
+          print('\033[34mUpdating funnels\033[0m')
+     if(counter!=0):
+          messages.success(request, f'Emails are sent! {counter} sequence(s) found')
+     return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
      
 
 
