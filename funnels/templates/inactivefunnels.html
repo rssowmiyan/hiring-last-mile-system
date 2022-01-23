@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load materializecss %}
+
+{% block content %}
+
+<div class="container">
+    {% if inactive_funnels %}
+    <ul class="collapsible amber accent-3">
+        {% for inactive_funnel in inactive_funnels %}
+        <li>
+          <div class="collapsible-header"><i class="medium material-icons">cloud_done</i> {{ inactive_funnel.funnel_name }}
+          </div>
+          <div class="collapsible-body">
+            <span style="margin-right: 20px;">No of sequences: {{inactive_funnel.no_of_seq}}</span>
+            <span style="margin-right: 20px;">Segment: {{inactive_funnel.segment}}</span>
+            <span style="margin-right: 20px;">Subsegment: {{inactive_funnel.sub_segment}}</span>
+            <span style="margin-right: 20px;">Scheduled Date: {{inactive_funnel.start_date}}</span>
+          </div>
+        </li>
+        {% endfor %}    
+    </ul>
+    {% else %}
+    <h2 style="text-align: center;"><i class="material-icons medium">cloud_off</i> No Inactive funnels</h2>
+    {% endif %}
+</div>
+
+{% endblock %}

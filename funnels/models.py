@@ -1,13 +1,13 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.conf import settings
-from bs4 import BeautifulSoup
+
 
 class DefaultTemplates(models.Model):
     template = models.TextField()
 
     def __str__(self) -> str:
-        return BeautifulSoup(self.template, "lxml").text 
+        return self.template
 
 class Funnel(models.Model):
     CHOICES = (

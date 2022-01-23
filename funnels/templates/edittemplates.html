@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load materializecss %}
+
+{% block content %}
+<script src="https://cdn.tiny.cloud/1/xzphby2gqa7j7lgqubc71ze6da29obhqwhbwimxi1uosqsvh/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#id_template',
+        menubar: false,
+        toolbar: ''
+    });
+    </script>
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn waves-effect" type="submit" value="submit">
+    </form>
+</div>
+<!-- Add mergefields dropbox -->
+<div class="input-field" style="width: 50%;margin-left: 18rem;">
+    <select name="insert_text" id="insert">
+        <option value="{full_name}">Full Name</option>
+        <option value="{first_name}">First Name</option>
+        <option value="{last_name}">Last Name</option>
+        <option value="{designation}">Designation</option>
+        <option value="{phone_number}">Phone Number</option>
+        <option value="{key_skills}">Key Skills</option>
+        <option value="{segment}">Segment</option>
+        <option value="{sub_segment}">Sub Segment</option>
+    </select>
+</div>
+<button style="margin-left: 18rem;" class="btn green accent-3" onclick="setTextToCurrentPos()">
+    Add the mergefield
+</button>
+
+
+<script>
+    function setTextToCurrentPos() {
+            let text_to_insert = $("#insert").val();
+            tinymce.activeEditor.execCommand('mceInsertContent', false, text_to_insert);
+            }
+    </script>
+{% endblock %}

@@ -3,8 +3,8 @@ from typing import Counter
 from django import forms
 from django.http import request
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from funnels.forms import SequenceForm,FunnelForm
+from django.shortcuts import redirect, render,get_object_or_404
+from funnels.forms import SequenceForm,FunnelForm,DefaultTemplatesForm
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.urls import reverse
@@ -87,11 +87,11 @@ def schedulesequences(request):
           return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
 
 def sendgrid(to_email,fillin_template,mail_subject,request):
-     sg = SendGridAPIClient(api_key=config('SENDGRID_API_KEY')) 
+     sg = SendGridAPIClient(api_key='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') 
      from_email = Email("tinktankstudio@gmail.com") 
      to_email = To(to_email)    
      subject = mail_subject
-     content = Content("text/html",fillin_template)
+     content = Content("text",fillin_template)
      mail = Mail(from_email, to_email, subject, content)
      response = sg.client.mail.send.post(request_body=mail.get())
      print(f'\033[34mstatus code->{response.status_code}.\033[0m')
@@ -149,7 +149,9 @@ def startfunnel(request):
                sendgrid(to_email,fillin_template,mail_subject,request)
           print('\033[34mUpdating funnels\033[0m')
      if(counter!=0):
-          messages.success(request, f'Emails are sent! {counter} sequence(s) found')
+          counter_msg = f'Emails are sent! {counter} sequence(s) found for today'
+          messages.success(request,counter_msg)
+     time.sleep(1)
      return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
      
 
@@ -165,6 +167,12 @@ def viewongoing(request):
           ongoing_funnels = Funnel.objects.filter(status='O')
           return render(request,'ongoingfunnels.html',{'ongoing_funnels':ongoing_funnels})
 
+
+def viewinactive(request):
+     if(request.method=='GET'):
+          inactive_funnels = Funnel.objects.filter(status='D')
+          return render(request,'inactivefunnels.html',{'inactive_funnels':inactive_funnels })
+
 @login_required(login_url='/')
 def customtemplate(request):
      if(request.method=='GET'):
@@ -176,3 +184,22 @@ def customtemplate(request):
           obj.save()
           messages.success(request, 'Template saved')
           return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
+
+@login_required(login_url='/')
+def displaycustomtemplate(request):
+     all_templates_objs = DefaultTemplates.objects.all()
+     return render(request,'viewtemplates.html',{'objs':all_templates_objs})
+
+
+@login_required(login_url='/')
+def editcustomtemplate(request,customtem_pk):
+     if(request.method=='GET'):
+          selected_custom_template_obj = DefaultTemplates.objects.filter(id=customtem_pk).first()
+          selected_custom_template_form = DefaultTemplatesForm(instance=selected_custom_template_obj)
+          return render(request,'edittemplates.html',{'form':selected_custom_template_form})
+     else:
+          form = DefaultTemplatesForm(request.POST)
+          form.save()
+          return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
+
+

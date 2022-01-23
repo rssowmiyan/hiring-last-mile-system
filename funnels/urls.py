@@ -11,5 +11,8 @@ urlpatterns=[
     path('activate/',views.startfunnel,name='startfunnel'),
     path('completed/',views.viewcompleted,name='viewcompleted'),
     path('ongoing/',views.viewongoing,name='viewongoing'),
-    path('customtem/',views.customtemplate,name='customtemplate')
+    path('inactive/',views.viewinactive,name='viewinactive'),
+    path('customtem/',views.customtemplate,name='customtemplate'),
+    path('viewcustomtem/',views.displaycustomtemplate,name='displaycustomtemplate'),
+    path('editcustomtem/<int:customtem_pk>',views.editcustomtemplate,name='editcustomtemplate'),
 ]

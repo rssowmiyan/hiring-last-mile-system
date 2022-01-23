@@ -4,12 +4,12 @@
 {% block content %}
 
 {% if messages %}
-<div class="card-alert card green lighten-5">
+<div class="card-alert card grey" style="width: 90vh;margin-left: 65vh;">
   {% for message in messages %}
-  <div class="card-content green-text">
+  <div class="card-content {{message.tags}}-text">
       <strong>Success! </strong>{{ message }}
   </div>
-  <button type="button" class="close green-text" data-dismiss="alert" aria-label="Close">
+  <button type="button" class="close {{message.tags}}-text" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">×</span>
   </button>
   {% endfor %}
@@ -24,12 +24,14 @@
   <h4 style="text-align: center;" id="wait"></h4>
   <h3 style="text-align: center;">Funnel<h4></h4>
   <div class="row">
-    <div class="col s4"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:createfunnel' %}">Create one</a></div></div>
-    <div class="col s4"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewongoing' %}">View ongoing</a></div></div>
-    <div class="col s4"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewcompleted' %}">View Completed</a></div></div>
+    <div class="col s3"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:createfunnel' %}">Create a new one</a></div></div>
+    <div class="col s3"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewongoing' %}">View ongoing</a></div></div>
+    <div class="col s3"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewcompleted' %}">View Completed</a></div></div>
+    <div class="col s3"><div class="rectangle"><a class="flow-text" href="{% url 'funnels:viewinactive' %}">View Inactive</a></div></div>
   </div>
   <div class="row">
     <div class="col s4"><div class="rectangle2"><a class="flow-text" href="{% url 'funnels:customtemplate' %}">Create Custom Templates</a></div></div>
+    <div class="col s4"><div class="rectangle2"><a class="flow-text" href="{% url 'funnels:displaycustomtemplate' %}">Edit Custom Templates</a></div></div>
     <div class="col s4"><div class="rectangle1"><a id="activate" class="flow-text" href="{% url 'funnels:startfunnel' %}">Activate pending ones</a></div></div>
   </div>
 </div>

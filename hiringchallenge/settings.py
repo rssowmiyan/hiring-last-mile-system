@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -116,19 +117,26 @@ STATICFILES_DIRS = [
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# we're using a custom user model
+# We're using a custom user model
 AUTH_USER_MODEL = 'users.NewUser'
 
 
-# For resetting passwords
+# For resetting passwords for future proposes
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
+
+
+
+MESSAGE_TAGS = {
+        messages.INFO: 'black',
+        messages.SUCCESS: 'light-green accent-3',
+        messages.WARNING: 'yellow',
+        messages.ERROR: 'red lighten-1',
+ }
