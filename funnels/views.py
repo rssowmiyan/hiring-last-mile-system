@@ -87,7 +87,7 @@ def schedulesequences(request):
           return HttpResponseRedirect(reverse('funnels:starterforfunnel'))
 
 def sendgrid(to_email,fillin_template,mail_subject,request):
-     sg = SendGridAPIClient(api_key='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') 
+     sg = SendGridAPIClient(api_key='') 
      from_email = Email("tinktankstudio@gmail.com") 
      to_email = To(to_email)    
      subject = mail_subject
